@@ -1,8 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { CardSearchComponent } from './app/components/card-search/card-search.component';
+import { AppComponent } from './app/app.component'; // Asegúrate de importar AppComponent
 import { provideHttpClient } from '@angular/common/http';
+import { appConfig } from './app/app.config'; // Importa appConfig
 
-bootstrapApplication(CardSearchComponent, {
-  providers: [provideHttpClient()]
-});
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));
