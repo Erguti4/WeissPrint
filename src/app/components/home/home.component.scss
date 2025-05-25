@@ -34,4 +34,21 @@
       background-color: #0056b3;
     }
   }
+
+  .layout-button {
+  background-color: #6c757d; // Un color diferente para distinguirlo
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.1em;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-top: 15px; // Espacio entre los botones
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #5a6268;
+  }
+}
+
+  
 }

@@ -1,0 +1,88 @@
+<div class="card-layout-container">
+  <h1>Generador de Diseño de Cartas para Imprimir</h1>
+
+  <div class="input-controls">
+    <div class="form-group">
+      <label for="cardName">Nombre de la Carta:</label>
+      <input
+        id="cardName"
+        type="text"
+        [(ngModel)]="cardName"
+        (input)="onCardNameChange()"
+        placeholder="Introduce el nombre de la carta"
+        (keyup.enter)="addCardToLayout()"
+      />
+      <ul *ngIf="suggestions.length > 0" class="autocomplete-suggestions">
+        <li *ngFor="let suggestion of suggestions" (click)="selectSuggestion(suggestion)">
+          {{ suggestion.name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label for="quantity">Cantidad:</label>
+      <input
+        id="quantity"
+        type="number"
+        [(ngModel)]="quantity"
+        min="1"
+        max="100"
+        (keyup.enter)="addCardToLayout()"
+      />
+    </div>
+
+    <button (click)="addCardToLayout()" class="add-button">Añadir Carta</button>
+
+    <div class="file-upload-group">
+      <label for="fileInput" class="custom-file-upload">
+        Cargar Archivo TXT
+      </label>
+      <input type="file" id="fileInput" (change)="handleFileInput($event)" accept=".txt" />
+    </div>
+    </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="added-cards-section" *ngIf="addedCards.length > 0">
+    <h2>Cartas en tu Diseño (Total de ítems únicos: {{ addedCards.length }}, Total de cartas: {{ flatCardsForPrint.length }})</h2>
+    <button (click)="printLayout()" class="print-button">Imprimir Diseño Completo</button>
+
+    <div class="added-cards-list">
+      <div *ngFor="let item of addedCards; let i = index" class="added-card-item">
+        <img [src]="item.card.image" [alt]="item.card.name" class="added-card-thumbnail" />
+        <div class="added-card-info">
+          <span>{{ item.card.name }}</span>
+          <span class="card-quantity-display">(x{{ item.quantity }})</span>
+        </div>
+        <button (click)="removeCardFromLayout(i)" class="remove-button">X</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="addedCards.length > 0" class="compact-layout-preview">
+    <h3>Vista Previa Compacta (Una por Carta)</h3>
+    <div class="compact-grid">
+      <div *ngFor="let item of addedCards; let i = index" class="compact-card-item">
+        <img [src]="item.card.image" [alt]="item.card.name" class="compact-card-image" />
+        <div class="compact-card-details">
+          <p class="compact-card-name">{{ item.card.name }}</p>
+          <p class="compact-card-count">Cantidad: <strong>{{ item.quantity }}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-print-layout">
+    <div class="print-grid">
+      <div *ngFor="let card of flatCardsForPrint; let i = index" class="print-card-item">
+        <img [src]="card.image" [alt]="card.name" class="print-card-image" />
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="addedCards.length === 0 && !errorMessage" class="initial-message">
+    Añade cartas con sus cantidades para crear tu diseño de impresión.
+  </div>
+</div>
