@@ -1,0 +1,63 @@
+<div class="card-search-container">
+  <div class="filter-controls"> <div class="search-box">
+      <input
+        [(ngModel)]="searchTerm"
+        (input)="onFilterChange()" placeholder="Buscar carta..."
+        aria-label="Buscar carta por nombre"
+      />
+      <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div class="expansion-filter">
+      <label for="expansion-select">Filtrar por Expansión:</label>
+      <select
+        id="expansion-select"
+        [(ngModel)]="selectedExpansion"
+        (change)="onFilterChange()" >
+        <option value="">Todas las expansiones</option> <option *ngFor="let expansion of uniqueExpansions" [value]="expansion">
+          {{ expansion }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="paginatedCards.length === 0 && searchTerm.length > 0" class="no-results">
+    No se encontraron cartas que coincidan con "{{ searchTerm }}".
+  </div>
+
+  <div *ngIf="paginatedCards.length === 0 && searchTerm.length === 0 && cards.length === 0" class="initial-message">
+    Cargando cartas...
+  </div>
+  <div *ngIf="paginatedCards.length === 0 && searchTerm.length === 0 && cards.length > 0" class="initial-message">
+    Utiliza el buscador para encontrar tus cartas favoritas o selecciona una expansión.
+  </div>
+
+
+  <div class="cards-grid">
+    <div class="card-item" *ngFor="let card of paginatedCards">
+      <img [src]="card.image" [alt]="card.name" class="card-image" />
+      <div class="card-details">
+        <h2>{{ card.name }}</h2>
+        <p><strong>Tipo:</strong> {{ card.type }}</p>
+        <p><strong>Color:</strong> {{ card.color }}</p>
+        <p><strong>Expansión:</strong> {{ card.expansion }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination-controls" *ngIf="totalPages > 1 && filteredCards.length > 0">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="pagination-button">Anterior</button>
+
+    <ng-container *ngFor="let page of pageNumbers">
+      <button
+        (click)="goToPage(page)"
+        [class.active]="page === currentPage"
+        class="pagination-button page-number-button"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="pagination-button">Siguiente</button>
+  </div>
+</div>
