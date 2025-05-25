@@ -27,6 +27,7 @@
       flex-direction: column;
       min-width: 180px;
       flex: 1;
+      position: relative; // Importante para posicionar la lista de sugerencias
 
       label {
         margin-bottom: 5px;
@@ -61,6 +62,73 @@
 
       &:hover {
         background-color: #218838;
+      }
+    }
+
+    .file-upload-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 180px;
+      flex: 1;
+      margin-top: 15px;
+
+      input[type="file"] {
+        display: none; /* Oculta el input de archivo nativo */
+      }
+
+      .custom-file-upload {
+        padding: 10px 20px;
+        background-color: #007bff; /* Un color distintivo para el botón de archivo */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        width: 100%; // Ocupa el ancho disponible
+        box-sizing: border-box;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+
+    button {
+      align-self: flex-end; /* Asegura que el botón de añadir se alinee con los inputs */
+    }
+  }
+
+  .autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #f0f0f0;
       }
     }
   }
@@ -183,24 +251,24 @@
     }
   }
 
-  /* NUEVOS ESTILOS PARA LA VISTA PREVIA COMPACTA */
+  /* ESTILOS PARA LA VISTA PREVIA COMPACTA */
   .compact-layout-preview {
     margin-top: 30px;
-    border: 1px solid #cce5ff; // Un borde suave para distinguirlo
+    border: 1px solid #cce5ff;
     border-radius: 8px;
     padding: 20px;
-    background-color: #e6f7ff; // Un fondo claro
+    background-color: #e6f7ff;
     box-shadow: 0 2px 5px rgba(0, 123, 255, 0.1);
 
     h3 {
       text-align: center;
-      color: #0056b3; // Tono de azul más oscuro
+      color: #0056b3;
       margin-bottom: 20px;
     }
 
     .compact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Ajusta el tamaño de la carta aquí */
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 15px;
       justify-items: center;
       padding: 10px;
@@ -218,11 +286,11 @@
       padding: 10px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       text-align: center;
-      width: 100%; // Asegura que ocupe el ancho de su celda
+      width: 100%;
       box-sizing: border-box;
 
       .compact-card-image {
-        max-width: 120px; /* Ajusta el tamaño de la imagen en la vista previa */
+        max-width: 120px;
         height: auto;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -240,7 +308,7 @@
         font-size: 1.1em;
         overflow: hidden;
         white-space: nowrap;
-        text-overflow: ellipsis; /* Para nombres largos */
+        text-overflow: ellipsis;
       }
 
       .compact-card-count {
@@ -254,281 +322,110 @@
     }
   }
 
-
-  /* ESTILOS PARA IMPRESIÓN (SIN CAMBIOS RESPECTO A LA LÓGICA ANTERIOR) */
-  @media print {
-    // Oculta los controles, títulos y la lista de gestión al imprimir
-    .input-controls,
-    .added-cards-section .print-button,
-    .added-cards-section h2,
-    .added-cards-list,
-    h1,
-    .compact-layout-preview h3, // También oculta el título de la vista previa compacta
-    .initial-message {
-      display: none;
-    }
-
-    .card-layout-container {
-      box-shadow: none;
-      border: none;
-      padding: 0;
-      margin: 0;
-      background-color: white;
-    }
-
-    // Si quieres que el grid de impresión sea el *compacto*, descomenta y adapta esto:
-    .compact-layout-preview { // Cambia esto para que sea el contenedor principal visible al imprimir
-      border: none;
-      padding: 0;
-      margin: 0;
-      box-shadow: none;
-      width: 100%;
-      float: none;
-      display: block; // Asegura que se muestre al imprimir
-    }
-
-    .compact-grid { // El grid que se imprimirá
-      grid-template-columns: repeat(auto-fill, minmax(60mm, 1fr)); /* Ajusta el tamaño de las cartas */
-      gap: 5mm;
-      padding: 0;
-      border: none;
-      justify-items: center;
-    }
-
-    .compact-card-item { // Los ítems dentro del grid
-      border: 1px solid #ccc;
-      padding: 2mm;
-      break-inside: avoid;
-      width: 60mm;
-      height: auto;
-      box-sizing: border-box;
-      margin: 0;
-      display: flex; // Asegura que los detalles de la carta y la cantidad estén bien alineados
-      flex-direction: column;
-      align-items: center; // Centra el contenido
-    }
-
-    .compact-card-image {
-      max-width: 100%; // La imagen ocupa el 100% del espacio del ítem
-      height: auto;
-      display: block;
-      margin-bottom: 2mm; // Espacio entre imagen y texto
-    }
-
-    .compact-card-details { // Contenedor para nombre y cantidad
-      width: 100%; // Ocupa todo el ancho
-      text-align: center; // Centra el texto
-    }
-
-    .compact-card-name {
-      font-size: 0.9em; // Ajusta el tamaño de la fuente para impresión
-      font-weight: bold;
-      margin-bottom: 1mm;
-      color: #000; // Color de texto negro para impresión
-    }
-
-    .compact-card-count {
-      font-size: 0.8em; // Tamaño de fuente para la cantidad
-      color: #333;
-      strong {
-        font-size: 1em; // Mantiene el tamaño de la cantidad
-      }
-    }
-
-    // Si también quieres imprimir el grid completo (flatCardsForPrint) para un "mazo de impresión"
-    // entonces tendrías que gestionar la visibilidad de ambas secciones con @media print.
-    // Por ahora, estoy asumiendo que quieres que solo el "compact-layout-preview" sea el que se imprima.
-    // Si quieres el otro (el de muchas copias) para imprimir, descomenta el "layout-preview" y ajusta su CSS.
-  }
-
-  // ... (todos tus estilos existentes)
-
-.form-group {
-  position: relative; /* Importante para posicionar la lista de sugerencias */
-  // ... (otros estilos)
-}
-
-.autocomplete-suggestions {
-  position: absolute;
-  top: 100%; /* Coloca la lista justo debajo del input */
-  left: 0;
-  right: 0;
-  z-index: 10; /* Asegura que la lista esté por encima de otros elementos */
-  background-color: white;
-  border: 1px solid #ced4da;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  max-height: 200px; /* Limita la altura y añade scroll */
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-  li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee; /* Separador entre sugerencias */
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  }
-}
-
-// ... (todos tus estilos existentes para .card-layout-container, .input-controls, .autocomplete-suggestions,
-// .error-message, .initial-message, .added-cards-section, .compact-layout-preview, etc.)
-
-// Asegúrate de que .full-print-layout y .print-grid estén ocultos por defecto en la pantalla
-.full-print-layout {
-  display: none; // Oculto por defecto en la vista normal de pantalla
-  margin-top: 30px; // Puedes mantener un margen si quieres que ocupe espacio cuando sea visible
-  // Otros estilos que quieras para el contenedor principal de impresión cuando esté visible
-}
-
-.print-grid {
-  // Los estilos base para el grid de impresión (pueden ser overrides para @media print)
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ejemplo de tamaño base */
-  gap: 15px;
-  justify-items: center;
-  padding: 10px;
-  border: 1px dashed #bbb;
-  border-radius: 5px;
-}
-
-.print-card-item {
-  // Estilos base para cada carta dentro del grid
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #eee;
-  padding: 5px;
-  border-radius: 4px;
-  background-color: #fdfdfd;
-}
-
-.print-card-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* ESTILOS PARA IMPRESIÓN */
-@media print {
-  body {
-    // Opcional: Resetea márgenes del body para impresión
-    margin: 0;
-    padding: 0;
-  }
-
-  // Oculta todos los elementos de la interfaz de usuario
-  .input-controls,
-  .added-cards-section,
-  .compact-layout-preview,
-  .initial-message,
-  h1, // Oculta el título principal de la aplicación
-  .card-layout-container > h1, // Si tienes un h1 directo en el contenedor
-  .print-button { // Oculta el botón de imprimir en la vista de impresión
-    display: none !important; // ¡Importante para forzar el ocultamiento!
-  }
-
-  // Asegura que el contenedor principal de la aplicación no tenga estilos que interfieran
-  .card-layout-container {
-    box-shadow: none !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background-color: white !important;
-    width: 100% !important;
-    max-width: none !important; // Ocupa todo el ancho disponible
-    min-height: auto !important; // Sin mínimo de altura
-  }
-
-  // Muestra el layout de impresión
+  // Asegúrate de que .full-print-layout y .print-grid estén ocultos por defecto en la pantalla
   .full-print-layout {
-    display: block !important; // ¡Hazlo visible solo para impresión!
-    width: 100%;
-    page-break-after: always; // Fuerza un salto de página después de este contenedor si hay más contenido
-    padding: 10mm; // Margen para la página impresa
+    display: none; // Oculto por defecto en la vista normal de pantalla
+    margin-top: 30px;
   }
 
   .print-grid {
-    display: grid !important; // Asegura que sea un grid
-    // Define las columnas para que las cartas se vean bien en una página impresa.
-    // Ej: 4 columnas de 60mm de ancho. Ajusta según el tamaño real de tus imágenes.
-    grid-template-columns: repeat(auto-fill, minmax(60mm, 1fr)) !important; // Ajusta 60mm según el tamaño deseado de la carta impresa
-    gap: 5mm !important; // Espacio entre cartas
-    padding: 0 !important;
-    border: none !important; // Quita el borde de la vista previa
-    justify-items: center; // Centra las cartas en su celda
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    justify-items: center;
+    padding: 10px;
+    border: 1px dashed #bbb;
+    border-radius: 5px;
   }
 
   .print-card-item {
-    border: 1px solid #ccc !important; // Borde fino para cada carta impresa
-    padding: 2mm !important; // Pequeño padding dentro del borde de la carta
-    break-inside: avoid !important; /* Evita que las cartas se corten entre páginas */
-    width: 60mm !important; // Asegura el ancho fijo para la impresión
-    height: auto !important; // La altura se ajustará automáticamente
-    box-sizing: border-box !important; // Padding y border se incluyen en el ancho
-    margin: 0 !important;
-    background-color: white !important; // Fondo blanco para la impresión
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #eee;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #fdfdfd;
   }
 
   .print-card-image {
-    max-width: 100% !important;
-    height: auto !important;
-    display: block !important; // Asegura que la imagen sea un bloque
-    box-shadow: none !important; // Quita sombras para impresión
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-}
 
-
-// ... (todos tus estilos existentes)
-
-.input-controls {
-  // ... (tus estilos existentes)
-
-  .file-upload-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center; // Centra el contenido dentro del grupo
-    min-width: 180px;
-    flex: 1;
-    margin-top: 15px; // Un poco de espacio arriba
-
-    input[type="file"] {
-      display: none; /* Oculta el input de archivo nativo */
+  /* ESTILOS PARA IMPRESIÓN */
+  @media print {
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background-color: white !important;
     }
 
-    .custom-file-upload {
-      padding: 10px 20px;
-      background-color: #007bff; /* Un color distintivo para el botón de archivo */
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease;
-      text-align: center;
-      width: 100%; // Ocupa el ancho disponible
-      box-sizing: border-box;
+    // Oculta todos los elementos de la interfaz de usuario
+    .input-controls,
+    .added-cards-section,
+    .compact-layout-preview,
+    .initial-message,
+    h1,
+    .card-layout-container > h1,
+    .print-button,
+    .error-message,
+    header, /* Añade cualquier elemento de encabezado global de tu app aquí */
+    footer { /* Añade cualquier elemento de pie de página global de tu app aquí */
+      display: none !important;
+    }
 
-      &:hover {
-        background-color: #0056b3;
-      }
+    // Asegura que el contenedor principal de la aplicación no tenga estilos que interfieran
+    .card-layout-container {
+      box-shadow: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background-color: white !important;
+      width: 100% !important;
+      max-width: none !important;
+      min-height: auto !important;
+    }
+
+    // Muestra el layout de impresión
+    .full-print-layout {
+      display: block !important;
+      width: 100vw !important;
+      height: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .print-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(63mm, 1fr)) !important;
+      gap: 3mm !important;
+      padding: 5mm !important;
+      border: none !important;
+      justify-content: center;
+      align-content: start;
+    }
+
+    .print-card-item {
+      border: 1px solid #ccc !important;
+      padding: 1mm !important;
+      break-inside: avoid !important;
+      width: 63mm !important;
+      height: auto !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+      background-color: white !important;
+      overflow: hidden !important;
+    }
+
+    .print-card-image {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+      box-shadow: none !important;
     }
   }
-
-  // Asegura que todos los botones en input-controls se alineen si es necesario
-  button {
-    align-self: flex-end; /* Asegura que el botón de añadir se alinee con los inputs */
-  }
 }
-
-}   
